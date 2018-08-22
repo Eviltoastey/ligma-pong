@@ -452,21 +452,21 @@ For the factory I made a random upgrade factory. This game has destroyable block
 # Gameplay components
 I added some extra stuff because I want a higher grade ofcourse. And it made the game more fun.
 
-##Multiplayer
+## Multiplayer
 Your friend can join by pressing the space bar. This will destroy the AI and let's you human friend join the fun.
 
-##AI
+## AI
 This AI is almost unbeatable. It tracks the ball or balls and predicts where it will land. I've added logic for the multi ball option but the AI can't see the tiles/blocks on the screen.
 
 There is also an option that draws a 'prediction line' from the AI's logic. That way you can see what the AI thinks.
 
-##pause screen with settings (Menu screen)
+## pause screen with settings (Menu screen)
 I've added a menu screen with different checkboxes so you can change the game. It's not a pause screen but it's kinds like a pause screen.
 
-##Canvas
+## Canvas
 The game is build inside of a canvas, what can i say more? 
 
-##Styling
+## Styling
 The style of the game is awesome! It has my face so +1 for that. (it also has my angry face and my happy face.)
 
 # Pull request
