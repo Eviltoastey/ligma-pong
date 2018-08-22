@@ -470,6 +470,15 @@ The game is build inside of a canvas, what can i say more?
 The style of the game is awesome! It has my face so +1 for that. (it also has my angry face and my happy face.)
 
 # Pull request
+I made a pull request for the astroid game from link: https://github.com/ArnovanDoesburg/Asteroid-Assault. He already created some upgrades and a good hierachy so it was easy for me to add an extra upgrade. 
+
+I've added the upgrade so there is some more variation in the random upgrades you get.
+
+You can find the pull request here: https://github.com/ArnovanDoesburg/Asteroid-Assault/pull/2
 
 
 # Peer review
+
+I've peerreviewed the same game I did a pull request to. 
+You can read the review here: https://github.com/ArnovanDoesburg/Asteroid-Assault/issues/3
+
