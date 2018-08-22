@@ -1,4 +1,4 @@
-class Listener
+class Listener implements Observer
 {
     callback:Function;
     context;

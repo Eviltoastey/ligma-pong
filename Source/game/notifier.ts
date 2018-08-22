@@ -1,4 +1,4 @@
-class Notifier
+class Notifier implements Observer
 {
     listeners:Listener[];
 
