@@ -287,18 +287,189 @@ class Score
     }
 
 }
-``
+```
 
 I used the observer here to watch over the score progress 'sortof'. When the ball object hits left or right the score needs to change and this is where the listener, notifier and observer come in.
 
 ## Decorator
 
+The mutator
 ```typescript
 
+class Mutator
+{
+    protected parent:Mutator = null;
+
+    constructor(parent:Mutator)
+    {
+        this.parent = parent;
+    }
+
+    getSettings():GameSettings
+    {
+        return new GameSettings();
+    }
+}
+
 ```
+The quick bat mutator (there are several other mutators with similar code but different game effects)
+```typescript
+
+/// <reference path="mutator.ts"/>
+class QuickBatMutator extends Mutator
+{
+    getSettings():GameSettings
+    {
+        let settings:GameSettings = this.parent.getSettings();
+
+        settings.quickBats = true;
+
+        return settings;
+    }
+}
+
+```
+
+Implementation in maingame.ts
+
+```typescripts
+
+if(this.quickBats.checked == true)
+{
+    MainGame.mutator = new QuickBatMutator(MainGame.mutator); 
+}
+         
+```
+
+The decorator is a set of mutators that decorate the game (or mutate the game (that sounds way cooler (Unreal tournement reference!))).
+In the menu screen of the game you can choose a set of mutators to decorate the game setting. This way you can change the game every time you play it!
 
 ## Factory
 
+The random upgrade factory
+```typescript
+/// <reference path="upgrades/speedUp.ts"/>
+/// <reference path="upgrades/slowDown.ts"/>
+/// <reference path="upgrades/shrink.ts"/>
+/// <reference path="upgrades/grow.ts"/>
+
+class RandomUpgradeFactory
+{
+    
+    static upgrade_list = [SpeedUp, SlowDown, Shrink, Grow];
+
+    static randomUpgrade(other_object:Ball)
+    {
+        let rand = Math.floor(Math.random() * this.upgrade_list.length); 
+        let return_upgrade:Upgrade = new this.upgrade_list[rand](other_object);
+
+        return return_upgrade;
+    }
+}
+```
+
+The tile maker (block maker)
 ```typescript
 
+
+/// <reference path="upgradeBlock.ts"/>
+
+class TileMaker
+{
+
+    rand:number;
+
+    constructor(columns:number, upgrade_amount:number)
+    {
+
+        if(MainGame.mutator.getSettings().upgrade_blocks == false)
+        {
+            upgrade_amount = 0;
+        }
+
+        if(MainGame.mutator.getSettings().blocks == true)
+        {
+            for(let x = 0; x < columns; x++)
+            {
+    
+                for(let y = 0; y < 10; y++)
+                {
+                    let pos:Vector = new Vector(Game.canvas.width / 2 - (columns/2)*20 + x*20, 25 + 50 * y);
+    
+                        if(pos.distanceTo(new Vector(pos.x, Game.canvas.height / 2)) > 50)
+                        {
+                            this.rand = Math.floor(Math.random() * 2) + 1; 
+    
+                            if(this.rand == 1)
+                            {
+                                let block:Block = new Block(pos);
+                            }
+                            else
+                            {
+                                if(upgrade_amount != 0)
+                                {
+                                    upgrade_amount--;
+                                    let upgrade_block:UpgradeBlock = new UpgradeBlock(pos);
+                                } 
+                                else 
+                                {
+                                    let block:Block = new Block(pos);
+                                }
+                            }
+                        }
+                }
+            }
+        }
+    }
+}
+
 ```
+
+The upgrade block
+
+```typescript
+class UpgradeBlock extends Block
+{
+    position:Vector;
+
+    constructor(position:Vector)
+    {
+        super(position, SpriteLoader.upgradeBlock);
+    }
+
+    onCollision(object_other:GameObject)
+    {
+        super.onCollision(object_other);
+
+        let upgrade = RandomUpgradeFactory.randomUpgrade(object_other as Ball);
+    }
+
+}
+
+```
+For the factory I made a random upgrade factory. This game has destroyable blocks and some of them have random upgrades. So why not make a factory that creates random upgrade blocks? The factory creates a random upgrade block and the Tilemaker actually uses them. In this way you always have random placed upgrade blocks.
+
+# Gameplay components
+I added some extra stuff because I want a higher grade ofcourse. And it made the game more fun.
+
+##Multiplayer
+Your friend can join by pressing the space bar. This will destroy the AI and let's you human friend join the fun.
+
+##AI
+This AI is almost unbeatable. It tracks the ball or balls and predicts where it will land. I've added logic for the multi ball option but the AI can't see the tiles/blocks on the screen.
+
+There is also an option that draws a 'prediction line' from the AI's logic. That way you can see what the AI thinks.
+
+##pause screen with settings (Menu screen)
+I've added a menu screen with different checkboxes so you can change the game. It's not a pause screen but it's kinds like a pause screen.
+
+##Canvas
+The game is build inside of a canvas, what can i say more? 
+
+##Styling
+The style of the game is awesome! It has my face so +1 for that. (it also has my angry face and my happy face.)
+
+# Pull request
+
+
+# Peer review
