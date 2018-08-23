@@ -5,6 +5,8 @@ Move up and down using the 'W' and 'A' keys.
 
 The bot can be replaced by a player two. This can be done by pressing 'spacebar'
 
+You can play the game here: https://stud.hosted.hr.nl/0887504/ligma-pong/Build/main.html
+
 # Installation
 
 If you want to install the game on your local device clone the repo.
