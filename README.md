@@ -32,7 +32,7 @@ You can run the main.html file to play the game.
 
 # UML
 
-![UML v0.5](https://i.imgur.com/X5H6LPg.png)
+![UML v0.5](https://i.imgur.com/jVABzg9.png)
 
 # Design Patterns
 
