@@ -1,4 +1,5 @@
-class WideBatsMutator extends Mutator
+/// <reference path="gameSettingsDecorator.ts"/>
+class WideBatsMutator extends GameSettingsDecorator
 {
     getSettings():GameSettings
     {

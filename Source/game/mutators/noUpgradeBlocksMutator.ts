@@ -1,4 +1,4 @@
-class NoUpgradeBlocksMutator extends Mutator
+class NoUpgradeBlocksMutator extends GameSettingsDecorator
 {
     getSettings():GameSettings
     {

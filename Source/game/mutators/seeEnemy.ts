@@ -1,4 +1,4 @@
-class SeeEnemyMutator extends Mutator
+class SeeEnemyMutator extends GameSettingsDecorator
 {
     getSettings():GameSettings
     {

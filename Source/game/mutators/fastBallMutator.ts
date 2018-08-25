@@ -1,6 +1,7 @@
 
-/// <reference path="mutator.ts"/>
-class FastBallMutator extends Mutator
+/// <reference path="gameSettingsDecorator.ts"/>
+
+class FastBallMutator extends GameSettingsDecorator
 {
     getSettings():GameSettings
     {

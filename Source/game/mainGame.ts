@@ -4,7 +4,7 @@
 /// <reference path="tileMaker.ts"/>
 /// <reference path="../menu/checkbox.ts"/>
 /// <reference path="mutators/gamesettings.ts"/>
-/// <reference path="mutators/mutator.ts"/>
+/// <reference path="mutators/gameSettingsDecorator.ts"/>
 /// <reference path="mutators/widebatsMutator.ts"/>
 /// <reference path="mutators/fastBallMutator.ts"/>
 /// <reference path="mutators/hardModeMutator.ts"/>
@@ -30,7 +30,7 @@ class MainGame extends Game
     quickBats:Checkbox;
     slowBats:Checkbox;
 
-    static mutator:Mutator = new Mutator(null);
+    static mutator:GameSettingsContainer = new GameSettingsContainer();
 
     gameStart()
     {
@@ -128,7 +128,7 @@ class MainGame extends Game
 
     reloadMutators()
     {
-        MainGame.mutator = new Mutator(null);
+        MainGame.mutator = new GameSettingsContainer();
 
         if(this.fast_ball.checked == true)
         {

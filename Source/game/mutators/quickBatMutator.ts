@@ -1,6 +1,6 @@
+/// <reference path="gameSettingsDecorator.ts"/>
+class QuickBatMutator extends GameSettingsDecorator
 
-/// <reference path="mutator.ts"/>
-class QuickBatMutator extends Mutator
 {
     getSettings():GameSettings
     {

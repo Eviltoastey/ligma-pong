@@ -1,4 +1,4 @@
-class HardModeMutator extends Mutator
+class HardModeMutator extends GameSettingsDecorator
 {
     getSettings():GameSettings
     {
