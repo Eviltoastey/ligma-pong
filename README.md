@@ -26,7 +26,8 @@ tsc -w
 ```
 
 To compile the code while you are changing it.
-All changes will be compiled to main.html.
+All changes will be compiled the Build map.
+You can run the main.html file to play the game.
 
 
 # UML
