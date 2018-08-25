@@ -12,7 +12,7 @@ class RandomUpgradeFactory
     static randomUpgrade(other_object:Ball)
     {
         let rand = Math.floor(Math.random() * this.upgrade_list.length); 
-        let return_upgrade = new this.upgrade_list[rand](other_object);
+        let return_upgrade:Upgrade = new this.upgrade_list[rand](other_object);
 
         if(rand == 0)
         {

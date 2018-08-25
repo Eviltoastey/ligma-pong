@@ -467,16 +467,6 @@ var Ball = (function (_super) {
     ;
     return Ball;
 }(GameObject));
-var BallUpgrades = (function (_super) {
-    __extends(BallUpgrades, _super);
-    function BallUpgrades() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    BallUpgrades.prototype.getUpgrades = function () {
-        this.upgrade_func && this.upgrade_func();
-    };
-    return BallUpgrades;
-}(Ball));
 var QuickBehaviour = (function () {
     function QuickBehaviour() {
     }
@@ -884,16 +874,27 @@ var GameSettings = (function () {
     }
     return GameSettings;
 }());
-var Mutator = (function () {
-    function Mutator(parent) {
-        this.parent = null;
-        this.parent = parent;
+var GameSettingsContainer = (function () {
+    function GameSettingsContainer() {
     }
-    Mutator.prototype.getSettings = function () {
+    GameSettingsContainer.prototype.getSettings = function () {
         return new GameSettings();
     };
-    return Mutator;
+    return GameSettingsContainer;
 }());
+var GameSettingsDecorator = (function (_super) {
+    __extends(GameSettingsDecorator, _super);
+    function GameSettingsDecorator(parent) {
+        var _this = _super.call(this) || this;
+        _this.parent = null;
+        _this.parent = parent;
+        return _this;
+    }
+    GameSettingsDecorator.prototype.getSettings = function () {
+        return _super.prototype.getSettings.call(this);
+    };
+    return GameSettingsDecorator;
+}(GameSettingsContainer));
 var WideBatsMutator = (function (_super) {
     __extends(WideBatsMutator, _super);
     function WideBatsMutator() {
@@ -905,7 +906,7 @@ var WideBatsMutator = (function (_super) {
         return settings;
     };
     return WideBatsMutator;
-}(Mutator));
+}(GameSettingsDecorator));
 var FastBallMutator = (function (_super) {
     __extends(FastBallMutator, _super);
     function FastBallMutator() {
@@ -917,7 +918,7 @@ var FastBallMutator = (function (_super) {
         return settings;
     };
     return FastBallMutator;
-}(Mutator));
+}(GameSettingsDecorator));
 var HardModeMutator = (function (_super) {
     __extends(HardModeMutator, _super);
     function HardModeMutator() {
@@ -929,7 +930,7 @@ var HardModeMutator = (function (_super) {
         return settings;
     };
     return HardModeMutator;
-}(Mutator));
+}(GameSettingsDecorator));
 var QuickBatMutator = (function (_super) {
     __extends(QuickBatMutator, _super);
     function QuickBatMutator() {
@@ -941,7 +942,7 @@ var QuickBatMutator = (function (_super) {
         return settings;
     };
     return QuickBatMutator;
-}(Mutator));
+}(GameSettingsDecorator));
 var SlowBatMutator = (function (_super) {
     __extends(SlowBatMutator, _super);
     function SlowBatMutator() {
@@ -953,7 +954,7 @@ var SlowBatMutator = (function (_super) {
         return settings;
     };
     return SlowBatMutator;
-}(Mutator));
+}(GameSettingsDecorator));
 var SeeEnemyMutator = (function (_super) {
     __extends(SeeEnemyMutator, _super);
     function SeeEnemyMutator() {
@@ -965,7 +966,7 @@ var SeeEnemyMutator = (function (_super) {
         return settings;
     };
     return SeeEnemyMutator;
-}(Mutator));
+}(GameSettingsDecorator));
 var StartButton = (function (_super) {
     __extends(StartButton, _super);
     function StartButton(position, mGame) {
@@ -1047,7 +1048,7 @@ var MainGame = (function (_super) {
             this.slowBats.checked = false;
     };
     MainGame.prototype.reloadMutators = function () {
-        MainGame.mutator = new Mutator(null);
+        MainGame.mutator = new GameSettingsContainer();
         if (this.fast_ball.checked == true) {
             MainGame.mutator = new FastBallMutator(MainGame.mutator);
         }
@@ -1080,7 +1081,7 @@ var MainGame = (function (_super) {
         Game.drawText(new Vector(100, 100), "rgb(0,0,0)", "20px Arial", "50", Score.player1_score + ' | ' + Score.player2_score);
         _super.prototype.draw.call(this);
     };
-    MainGame.mutator = new Mutator(null);
+    MainGame.mutator = new GameSettingsContainer();
     return MainGame;
 }(Game));
 var game = new MainGame(0, 0, 900, 500);
@@ -1095,7 +1096,7 @@ var MultiBallMutator = (function (_super) {
         return settings;
     };
     return MultiBallMutator;
-}(Mutator));
+}(GameSettingsDecorator));
 var NoBlocksMutator = (function (_super) {
     __extends(NoBlocksMutator, _super);
     function NoBlocksMutator() {
@@ -1107,7 +1108,7 @@ var NoBlocksMutator = (function (_super) {
         return settings;
     };
     return NoBlocksMutator;
-}(Mutator));
+}(GameSettingsDecorator));
 var NoUpgradeBlocksMutator = (function (_super) {
     __extends(NoUpgradeBlocksMutator, _super);
     function NoUpgradeBlocksMutator() {
@@ -1119,7 +1120,7 @@ var NoUpgradeBlocksMutator = (function (_super) {
         return settings;
     };
     return NoUpgradeBlocksMutator;
-}(Mutator));
+}(GameSettingsDecorator));
 var MenuButton = (function (_super) {
     __extends(MenuButton, _super);
     function MenuButton(position, mGame) {
