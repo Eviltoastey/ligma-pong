@@ -31,6 +31,8 @@ All changes will be compiled to main.html.
 
 # UML
 
+![UML v0.5](https://i.imgur.com/X5H6LPg.png)
+
 # Design Patterns
 
 ## Singleton
