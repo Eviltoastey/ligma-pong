@@ -9,13 +9,13 @@ class Bat extends GameObject
 
     constructor(x:number,y:number)
     {
-        super(x,y, MainGame.mutator.getSettings().bat_sprite);
+        super(x,y, MainGame.settings.bat_sprite);
 
-        if(MainGame.mutator.getSettings().quickBats)
+        if(MainGame.settings.quickBats)
         {
             this.behaviour = new QuickBehaviour();
         }
-        else if(MainGame.mutator.getSettings().slowBats)
+        else if(MainGame.settings.slowBats)
         {
             this.behaviour = new SlowBehaviour();
         }

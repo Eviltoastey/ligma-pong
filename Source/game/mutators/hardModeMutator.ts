@@ -1,11 +1,8 @@
+/// <reference path="gameSettingsDecorator.ts"/>
 class HardModeMutator extends GameSettingsDecorator
 {
-    getSettings():GameSettings
+    applySettings():void
     {
-        let settings:GameSettings = this.parent.getSettings();
-
-        settings.hard_mode = true;
-
-        return settings;
+        this.hard_mode = true;
     }
 }

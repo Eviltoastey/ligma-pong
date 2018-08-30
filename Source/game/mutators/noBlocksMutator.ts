@@ -1,11 +1,8 @@
+/// <reference path="gameSettingsDecorator.ts"/>
 class NoBlocksMutator extends GameSettingsDecorator
 {
-    getSettings():GameSettings
+    applySettings():void
     {
-        let settings:GameSettings = this.parent.getSettings();
-
-        settings.blocks = false;
-
-        return settings;
+        this.blocks = false;
     }
 }

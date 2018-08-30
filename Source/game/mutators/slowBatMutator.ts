@@ -2,12 +2,8 @@
 class SlowBatMutator extends GameSettingsDecorator
 
 {
-    getSettings():GameSettings
+    applySettings():void
     {
-        let settings:GameSettings = this.parent.getSettings();
-
-        settings.slowBats = true;
-
-        return settings;
+        this.slowBats = true;
     }
 }

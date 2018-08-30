@@ -9,12 +9,12 @@ class TileMaker
     constructor(columns:number, upgrade_amount:number)
     {
 
-        if(MainGame.mutator.getSettings().upgrade_blocks == false)
+        if(MainGame.settings.upgrade_blocks == false)
         {
             upgrade_amount = 0;
         }
 
-        if(MainGame.mutator.getSettings().blocks == true)
+        if(MainGame.settings.blocks == true)
         {
             for(let x = 0; x < columns; x++)
             {

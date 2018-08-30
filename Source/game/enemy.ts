@@ -9,7 +9,7 @@ class Enemy extends Bat
     {
         super(Game.canvas.width - 50, Game.canvas.height / 2);
 
-        if(MainGame.mutator.getSettings().hard_mode)
+        if(MainGame.settings.hard_mode)
             this.prediction_frames = 50000;
     }
 
@@ -109,7 +109,7 @@ class Enemy extends Bat
                     sBall.velocity.y *= -1
                 }
                 
-                if(MainGame.mutator.getSettings().see_enemy)
+                if(MainGame.settings.see_enemy)
                     Game.drawText(sBall.position, "rgb(0,0,0)", "10px Arial", "1", ".")
 
                 if(sBall.position.x >= this.position.x)

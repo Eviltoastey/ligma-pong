@@ -1,18 +1,26 @@
-/// <reference path="gameSettingsContainer.ts"/>
-
-abstract class GameSettingsDecorator extends GameSettingsContainer
+/// <reference path="gameSettings.ts"/>
+abstract class GameSettingsDecorator extends GameSettings
 {
-    protected parent:GameSettingsContainer = null;
+    protected parent:GameSettings = null;
     
-    constructor(parent:GameSettingsContainer)
+    constructor(parent:GameSettings)
     {
         super();
 
         this.parent = parent;
+
+        this.applySettingsRecursively(this);
     }
 
-    getSettings():GameSettings
+    applySettingsRecursively(target: GameSettingsDecorator):void
     {
-        return super.getSettings();
+        if(this.parent instanceof GameSettingsDecorator)
+        {
+            (this.parent as GameSettingsDecorator).applySettingsRecursively.call(this.parent, target);
+        }
+
+        this.applySettings.call(target);
     }
+
+    abstract applySettings():void;
 }

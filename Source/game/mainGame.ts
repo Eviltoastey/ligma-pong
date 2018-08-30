@@ -30,7 +30,7 @@ class MainGame extends Game
     quickBats:Checkbox;
     slowBats:Checkbox;
 
-    static mutator:GameSettingsContainer = new GameSettingsContainer();
+    static settings:GameSettings = new GameSettings();
 
     gameStart()
     {
@@ -70,7 +70,7 @@ class MainGame extends Game
 
         this.tiles = new TileMaker(10,30);
 
-        if(MainGame.mutator.getSettings().multi_ball == true)
+        if(MainGame.settings.multi_ball)
         {
             let ball2:Ball = new Ball(new Vector(Game.canvas.width / 2 - 50, Game.canvas.height / 2));
             let ball3:Ball = new Ball(new Vector(Game.canvas.width / 2 + 50, Game.canvas.height / 2));
@@ -128,51 +128,51 @@ class MainGame extends Game
 
     reloadMutators()
     {
-        MainGame.mutator = new GameSettingsContainer();
+        MainGame.settings = new GameSettings();
 
-        if(this.fast_ball.checked == true)
+        if(this.fast_ball.checked)
         {
-            MainGame.mutator = new FastBallMutator(MainGame.mutator);
+            MainGame.settings = new FastBallMutator(MainGame.settings);
         }
 
-        if(this.wide_bats.checked == true)
+        if(this.wide_bats.checked)
         {
-            MainGame.mutator = new WideBatsMutator(MainGame.mutator); 
+            MainGame.settings = new WideBatsMutator(MainGame.settings); 
         }
 
-        if(this.no_blocks.checked == true)
+        if(this.no_blocks.checked)
         {
-            MainGame.mutator = new NoBlocksMutator(MainGame.mutator); 
+            MainGame.settings = new NoBlocksMutator(MainGame.settings); 
         }
 
-        if(this.upgrade_blocks.checked == true)
+        if(this.upgrade_blocks.checked)
         {
-            MainGame.mutator = new NoUpgradeBlocksMutator(MainGame.mutator); 
+            MainGame.settings = new NoUpgradeBlocksMutator(MainGame.settings); 
         }
 
-        if(this.multi_ball.checked == true)
+        if(this.multi_ball.checked)
         {
-            MainGame.mutator = new MultiBallMutator(MainGame.mutator); 
+            MainGame.settings = new MultiBallMutator(MainGame.settings); 
         }
 
-        if(this.see_enemy.checked == true)
+        if(this.see_enemy.checked)
         {
-            MainGame.mutator = new SeeEnemyMutator(MainGame.mutator); 
+            MainGame.settings = new SeeEnemyMutator(MainGame.settings); 
         }
         
-        if(this.hard_mode.checked == true)
+        if(this.hard_mode.checked)
         {
-            MainGame.mutator = new HardModeMutator(MainGame.mutator); 
+            MainGame.settings = new HardModeMutator(MainGame.settings); 
         }
         
-        if(this.quickBats.checked == true)
+        if(this.quickBats.checked)
         {
-            MainGame.mutator = new QuickBatMutator(MainGame.mutator); 
+            MainGame.settings = new QuickBatMutator(MainGame.settings);
         }
         
-        if(this.slowBats.checked == true)
+        if(this.slowBats.checked)
         {
-            MainGame.mutator = new SlowBatMutator(MainGame.mutator); 
+            MainGame.settings = new SlowBatMutator(MainGame.settings); 
         }
     }
 

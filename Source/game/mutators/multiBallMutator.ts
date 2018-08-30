@@ -1,12 +1,8 @@
 /// <reference path="gameSettingsDecorator.ts"/>
 class MultiBallMutator extends GameSettingsDecorator
 {
-    getSettings():GameSettings
+    applySettings():void
     {
-        let settings:GameSettings = this.parent.getSettings();
-
-        settings.multi_ball = true;
-
-        return settings;
+        this.multi_ball = true;
     }
 }

@@ -2,12 +2,8 @@
 class QuickBatMutator extends GameSettingsDecorator
 
 {
-    getSettings():GameSettings
+    applySettings():void
     {
-        let settings:GameSettings = this.parent.getSettings();
-
-        settings.quickBats = true;
-
-        return settings;
+        this.quickBats = true;
     }
 }

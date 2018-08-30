@@ -1,11 +1,8 @@
+/// <reference path="gameSettingsDecorator.ts"/>
 class SeeEnemyMutator extends GameSettingsDecorator
 {
-    getSettings():GameSettings
+    applySettings():void
     {
-        let settings:GameSettings = this.parent.getSettings();
-
-        settings.see_enemy = true;
-
-        return settings;
+        this.see_enemy = true;
     }
 }

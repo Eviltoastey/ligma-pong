@@ -14,7 +14,7 @@ class Ball extends GameObject
         this.l_notifier = new Notifier();
         this.r_notifier = new Notifier();
 
-        let baseSpeed = MainGame.mutator.getSettings().base_ball_speed;
+        let baseSpeed = MainGame.settings.base_ball_speed;
 
         this.velocity = new Vector(Math.random() >= 0.5? baseSpeed : -baseSpeed, Math.random() * 5 - 2.5)
 

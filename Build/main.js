@@ -434,7 +434,7 @@ var Ball = (function (_super) {
         var _this = _super.call(this, position.x, position.y, SpriteLoader.ball) || this;
         _this.l_notifier = new Notifier();
         _this.r_notifier = new Notifier();
-        var baseSpeed = MainGame.mutator.getSettings().base_ball_speed;
+        var baseSpeed = MainGame.settings.base_ball_speed;
         _this.velocity = new Vector(Math.random() >= 0.5 ? baseSpeed : -baseSpeed, Math.random() * 5 - 2.5);
         _this.r_notifier.register(Score.instance.RListner);
         _this.l_notifier.register(Score.instance.lListner);
@@ -521,12 +521,12 @@ var SlowBehaviour = (function () {
 var Bat = (function (_super) {
     __extends(Bat, _super);
     function Bat(x, y) {
-        var _this = _super.call(this, x, y, MainGame.mutator.getSettings().bat_sprite) || this;
+        var _this = _super.call(this, x, y, MainGame.settings.bat_sprite) || this;
         _this.behaviour = new NormalBehaviour();
-        if (MainGame.mutator.getSettings().quickBats) {
+        if (MainGame.settings.quickBats) {
             _this.behaviour = new QuickBehaviour();
         }
-        else if (MainGame.mutator.getSettings().slowBats) {
+        else if (MainGame.settings.slowBats) {
             _this.behaviour = new SlowBehaviour();
         }
         return _this;
@@ -662,7 +662,7 @@ var Enemy = (function (_super) {
         var _this = _super.call(this, Game.canvas.width - 50, Game.canvas.height / 2) || this;
         _this.prediction_frames = 150;
         _this.player_two = false;
-        if (MainGame.mutator.getSettings().hard_mode)
+        if (MainGame.settings.hard_mode)
             _this.prediction_frames = 50000;
         return _this;
     }
@@ -725,7 +725,7 @@ var Enemy = (function (_super) {
                 if (sBall.position.y <= 0) {
                     sBall.velocity.y *= -1;
                 }
-                if (MainGame.mutator.getSettings().see_enemy)
+                if (MainGame.settings.see_enemy)
                     Game.drawText(sBall.position, "rgb(0,0,0)", "10px Arial", "1", ".");
                 if (sBall.position.x >= this.position.x)
                     break;
@@ -803,10 +803,10 @@ var UpgradeBlock = (function (_super) {
 }(Block));
 var TileMaker = (function () {
     function TileMaker(columns, upgrade_amount) {
-        if (MainGame.mutator.getSettings().upgrade_blocks == false) {
+        if (MainGame.settings.upgrade_blocks == false) {
             upgrade_amount = 0;
         }
-        if (MainGame.mutator.getSettings().blocks == true) {
+        if (MainGame.settings.blocks == true) {
             for (var x = 0; x < columns; x++) {
                 for (var y = 0; y < 10; y++) {
                     var pos = new Vector(Game.canvas.width / 2 - (columns / 2) * 20 + x * 20, 25 + 50 * y);
@@ -874,36 +874,30 @@ var GameSettings = (function () {
     }
     return GameSettings;
 }());
-var GameSettingsContainer = (function () {
-    function GameSettingsContainer() {
-    }
-    GameSettingsContainer.prototype.getSettings = function () {
-        return new GameSettings();
-    };
-    return GameSettingsContainer;
-}());
 var GameSettingsDecorator = (function (_super) {
     __extends(GameSettingsDecorator, _super);
     function GameSettingsDecorator(parent) {
         var _this = _super.call(this) || this;
         _this.parent = null;
         _this.parent = parent;
+        _this.applySettingsRecursively(_this);
         return _this;
     }
-    GameSettingsDecorator.prototype.getSettings = function () {
-        return _super.prototype.getSettings.call(this);
+    GameSettingsDecorator.prototype.applySettingsRecursively = function (target) {
+        if (this.parent instanceof GameSettingsDecorator) {
+            this.parent.applySettingsRecursively.call(this.parent, target);
+        }
+        this.applySettings.call(target);
     };
     return GameSettingsDecorator;
-}(GameSettingsContainer));
+}(GameSettings));
 var WideBatsMutator = (function (_super) {
     __extends(WideBatsMutator, _super);
     function WideBatsMutator() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    WideBatsMutator.prototype.getSettings = function () {
-        var settings = this.parent.getSettings();
-        settings.bat_sprite = SpriteLoader.wide_bat;
-        return settings;
+    WideBatsMutator.prototype.applySettings = function () {
+        this.bat_sprite = SpriteLoader.wide_bat;
     };
     return WideBatsMutator;
 }(GameSettingsDecorator));
@@ -912,10 +906,8 @@ var FastBallMutator = (function (_super) {
     function FastBallMutator() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    FastBallMutator.prototype.getSettings = function () {
-        var settings = this.parent.getSettings();
-        settings.base_ball_speed *= 2;
-        return settings;
+    FastBallMutator.prototype.applySettings = function () {
+        this.base_ball_speed *= 2;
     };
     return FastBallMutator;
 }(GameSettingsDecorator));
@@ -924,10 +916,8 @@ var HardModeMutator = (function (_super) {
     function HardModeMutator() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    HardModeMutator.prototype.getSettings = function () {
-        var settings = this.parent.getSettings();
-        settings.hard_mode = true;
-        return settings;
+    HardModeMutator.prototype.applySettings = function () {
+        this.hard_mode = true;
     };
     return HardModeMutator;
 }(GameSettingsDecorator));
@@ -936,10 +926,8 @@ var QuickBatMutator = (function (_super) {
     function QuickBatMutator() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    QuickBatMutator.prototype.getSettings = function () {
-        var settings = this.parent.getSettings();
-        settings.quickBats = true;
-        return settings;
+    QuickBatMutator.prototype.applySettings = function () {
+        this.quickBats = true;
     };
     return QuickBatMutator;
 }(GameSettingsDecorator));
@@ -948,10 +936,8 @@ var SlowBatMutator = (function (_super) {
     function SlowBatMutator() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    SlowBatMutator.prototype.getSettings = function () {
-        var settings = this.parent.getSettings();
-        settings.slowBats = true;
-        return settings;
+    SlowBatMutator.prototype.applySettings = function () {
+        this.slowBats = true;
     };
     return SlowBatMutator;
 }(GameSettingsDecorator));
@@ -960,10 +946,8 @@ var SeeEnemyMutator = (function (_super) {
     function SeeEnemyMutator() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    SeeEnemyMutator.prototype.getSettings = function () {
-        var settings = this.parent.getSettings();
-        settings.see_enemy = true;
-        return settings;
+    SeeEnemyMutator.prototype.applySettings = function () {
+        this.see_enemy = true;
     };
     return SeeEnemyMutator;
 }(GameSettingsDecorator));
@@ -1013,7 +997,7 @@ var MainGame = (function (_super) {
         var enemy = new Enemy();
         var player1 = new Player(50, Game.canvas.height / 2);
         this.tiles = new TileMaker(10, 30);
-        if (MainGame.mutator.getSettings().multi_ball == true) {
+        if (MainGame.settings.multi_ball) {
             var ball2 = new Ball(new Vector(Game.canvas.width / 2 - 50, Game.canvas.height / 2));
             var ball3 = new Ball(new Vector(Game.canvas.width / 2 + 50, Game.canvas.height / 2));
         }
@@ -1048,40 +1032,40 @@ var MainGame = (function (_super) {
             this.slowBats.checked = false;
     };
     MainGame.prototype.reloadMutators = function () {
-        MainGame.mutator = new GameSettingsContainer();
-        if (this.fast_ball.checked == true) {
-            MainGame.mutator = new FastBallMutator(MainGame.mutator);
+        MainGame.settings = new GameSettings();
+        if (this.fast_ball.checked) {
+            MainGame.settings = new FastBallMutator(MainGame.settings);
         }
-        if (this.wide_bats.checked == true) {
-            MainGame.mutator = new WideBatsMutator(MainGame.mutator);
+        if (this.wide_bats.checked) {
+            MainGame.settings = new WideBatsMutator(MainGame.settings);
         }
-        if (this.no_blocks.checked == true) {
-            MainGame.mutator = new NoBlocksMutator(MainGame.mutator);
+        if (this.no_blocks.checked) {
+            MainGame.settings = new NoBlocksMutator(MainGame.settings);
         }
-        if (this.upgrade_blocks.checked == true) {
-            MainGame.mutator = new NoUpgradeBlocksMutator(MainGame.mutator);
+        if (this.upgrade_blocks.checked) {
+            MainGame.settings = new NoUpgradeBlocksMutator(MainGame.settings);
         }
-        if (this.multi_ball.checked == true) {
-            MainGame.mutator = new MultiBallMutator(MainGame.mutator);
+        if (this.multi_ball.checked) {
+            MainGame.settings = new MultiBallMutator(MainGame.settings);
         }
-        if (this.see_enemy.checked == true) {
-            MainGame.mutator = new SeeEnemyMutator(MainGame.mutator);
+        if (this.see_enemy.checked) {
+            MainGame.settings = new SeeEnemyMutator(MainGame.settings);
         }
-        if (this.hard_mode.checked == true) {
-            MainGame.mutator = new HardModeMutator(MainGame.mutator);
+        if (this.hard_mode.checked) {
+            MainGame.settings = new HardModeMutator(MainGame.settings);
         }
-        if (this.quickBats.checked == true) {
-            MainGame.mutator = new QuickBatMutator(MainGame.mutator);
+        if (this.quickBats.checked) {
+            MainGame.settings = new QuickBatMutator(MainGame.settings);
         }
-        if (this.slowBats.checked == true) {
-            MainGame.mutator = new SlowBatMutator(MainGame.mutator);
+        if (this.slowBats.checked) {
+            MainGame.settings = new SlowBatMutator(MainGame.settings);
         }
     };
     MainGame.prototype.draw = function () {
         Game.drawText(new Vector(100, 100), "rgb(0,0,0)", "20px Arial", "50", Score.player1_score + ' | ' + Score.player2_score);
         _super.prototype.draw.call(this);
     };
-    MainGame.mutator = new GameSettingsContainer();
+    MainGame.settings = new GameSettings();
     return MainGame;
 }(Game));
 var game = new MainGame(0, 0, 900, 500);
@@ -1090,10 +1074,8 @@ var MultiBallMutator = (function (_super) {
     function MultiBallMutator() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    MultiBallMutator.prototype.getSettings = function () {
-        var settings = this.parent.getSettings();
-        settings.multi_ball = true;
-        return settings;
+    MultiBallMutator.prototype.applySettings = function () {
+        this.multi_ball = true;
     };
     return MultiBallMutator;
 }(GameSettingsDecorator));
@@ -1102,10 +1084,8 @@ var NoBlocksMutator = (function (_super) {
     function NoBlocksMutator() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    NoBlocksMutator.prototype.getSettings = function () {
-        var settings = this.parent.getSettings();
-        settings.blocks = false;
-        return settings;
+    NoBlocksMutator.prototype.applySettings = function () {
+        this.blocks = false;
     };
     return NoBlocksMutator;
 }(GameSettingsDecorator));
@@ -1114,10 +1094,8 @@ var NoUpgradeBlocksMutator = (function (_super) {
     function NoUpgradeBlocksMutator() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    NoUpgradeBlocksMutator.prototype.getSettings = function () {
-        var settings = this.parent.getSettings();
-        settings.upgrade_blocks = false;
-        return settings;
+    NoUpgradeBlocksMutator.prototype.applySettings = function () {
+        this.upgrade_blocks = false;
     };
     return NoUpgradeBlocksMutator;
 }(GameSettingsDecorator));
