@@ -26,10 +26,13 @@ tsc -w
 ```
 
 To compile the code while you are changing it.
-All changes will be compiled to main.html.
+All changes will be compiled the Build map.
+You can run the main.html file to play the game.
 
 
 # UML
+
+![UML v0.5](https://i.imgur.com/jVABzg9.png)
 
 # Design Patterns
 
@@ -295,21 +298,25 @@ I used the observer here to watch over the score progress 'sortof'. When the bal
 
 ## Decorator
 
-The mutator
+The Decorator
 ```typescript
 
-class Mutator
-{
-    protected parent:Mutator = null;
+/// <reference path="gameSettingsContainer.ts"/>
 
-    constructor(parent:Mutator)
+abstract class GameSettingsDecorator extends GameSettingsContainer
+{
+    protected parent:GameSettingsContainer = null;
+    
+    constructor(parent:GameSettingsContainer)
     {
+        super();
+
         this.parent = parent;
     }
 
     getSettings():GameSettings
     {
-        return new GameSettings();
+        return super.getSettings();
     }
 }
 
@@ -317,8 +324,9 @@ class Mutator
 The quick bat mutator (there are several other mutators with similar code but different game effects)
 ```typescript
 
-/// <reference path="mutator.ts"/>
-class QuickBatMutator extends Mutator
+/// <reference path="gameSettingsDecorator.ts"/>
+class QuickBatMutator extends GameSettingsDecorator
+
 {
     getSettings():GameSettings
     {
@@ -336,10 +344,12 @@ Implementation in maingame.ts
 
 ```typescripts
 
-if(this.quickBats.checked == true)
-{
-    MainGame.mutator = new QuickBatMutator(MainGame.mutator); 
-}
+    static mutator:GameSettingsContainer = new GameSettingsContainer();
+    
+        if(this.quickBats.checked == true)
+        {
+            MainGame.mutator = new QuickBatMutator(MainGame.mutator); 
+        }
          
 ```
 
@@ -358,12 +368,30 @@ The random upgrade factory
 class RandomUpgradeFactory
 {
     
+    
     static upgrade_list = [SpeedUp, SlowDown, Shrink, Grow];
 
     static randomUpgrade(other_object:Ball)
     {
         let rand = Math.floor(Math.random() * this.upgrade_list.length); 
         let return_upgrade:Upgrade = new this.upgrade_list[rand](other_object);
+
+        if(rand == 0)
+        {
+            return_upgrade = new SpeedUp(other_object);
+        }
+        else if(rand == 1)
+        {
+            return_upgrade = new SlowDown(other_object);
+        }
+        else if(rand == 2)
+        {
+            return_upgrade = new Shrink(other_object);
+        }
+        else if(rand == 3)
+        {
+            return_upgrade = new Grow(other_object);
+        }
 
         return return_upgrade;
     }
